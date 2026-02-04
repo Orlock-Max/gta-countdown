@@ -96,24 +96,28 @@ footer {
     <div class="subtitle">Countdown to Release</div>
 
     <div class="countdown">
-        <div class="unit">
-            <div class="number" id="weeks">0</div>
-            <div class="label">WEEKS</div>
-        </div>
-        <div class="unit">
-            <div class="number" id="hours">0</div>
-            <div class="label">HOURS</div>
-        </div>
-        <div class="unit">
-            <div class="number" id="minutes">0</div>
-            <div class="label">MINUTES</div>
-        </div>
-        <div class="unit">
-            <div class="number" id="seconds">0</div>
-            <div class="label">SECONDS</div>
-        </div>
+    <div class="unit">
+        <div class="number" id="weeks">0</div>
+        <div class="label">WEEKS</div>
+    </div>
+    <div class="unit">
+        <div class="number" id="days">0</div>
+        <div class="label">DAYS</div>
+    </div>
+    <div class="unit">
+        <div class="number" id="hours">0</div>
+        <div class="label">HOURS</div>
+    </div>
+    <div class="unit">
+        <div class="number" id="minutes">0</div>
+        <div class="label">MINUTES</div>
+    </div>
+    <div class="unit">
+        <div class="number" id="seconds">0</div>
+        <div class="label">SECONDS</div>
     </div>
 </div>
+
 
 <footer id="footerNote">
     This was created using AI because the original requestor is too lazy to write their own HTML.
@@ -154,6 +158,9 @@ function updateCountdown() {
     const weeksVal = Math.floor(diff / week);
     diff %= week;
 
+    const daysVal = Math.floor(diff / day);
+    diff %= day;
+
     const hoursVal = Math.floor(diff / hour);
     diff %= hour;
 
@@ -162,7 +169,9 @@ function updateCountdown() {
 
     const secondsVal = Math.floor(diff / second);
 
+    // Update the DOM
     weeksEl.textContent = weeksVal;
+    document.getElementById("days").textContent = daysVal;
     hoursEl.textContent = hoursVal;
     minutesEl.textContent = minutesVal;
     secondsEl.textContent = secondsVal;
