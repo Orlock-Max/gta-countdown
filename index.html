@@ -1,0 +1,190 @@
+<!-- index.html -->
+<style>
+html, body {
+    margin: 0;
+    height: 100%;
+    font-family: system-ui, -apple-system, Segoe UI, sans-serif;
+    color: white;
+}
+
+/* Background image with subtle dark fade at bottom */
+body {
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(0,0,0,0) 0%,
+            rgba(0,0,0,0) 55%,
+            rgba(0,0,0,0.15) 100%
+        ),
+        url("Jason_and_Lucia_02_landscape.webp") center / cover no-repeat;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Main content */
+.container {
+    text-align: center;
+    padding: 2rem;
+}
+
+h1 {
+    font-size: 3.5rem;
+    letter-spacing: 0.25em;
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    opacity: 0.85;
+    margin-bottom: 2.5rem;
+}
+
+/* Countdown */
+.countdown {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+}
+
+.unit {
+    background: rgba(0, 0, 0, 0.45);
+    padding: 1.5rem 1rem;
+    border-radius: 14px;
+}
+
+.number {
+    font-size: 3rem;
+    font-weight: 700;
+}
+
+.label {
+    margin-top: 0.25rem;
+    font-size: 0.85rem;
+    opacity: 0.8;
+    letter-spacing: 0.1em;
+}
+
+/* Footer note */
+footer {
+    position: fixed;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 0.75rem;
+    opacity: 0.8;
+    padding: 0 12px;
+}
+
+/* Tiny mute toggle */
+.mute {
+    position: fixed;
+    bottom: 12px;
+    right: 14px;
+    font-size: 0.7rem;
+    opacity: 0.6;
+    cursor: pointer;
+    user-select: none;
+}
+.mute:hover { opacity: 0.9; }
+</style>
+
+<div class="container">
+    <h1>GTA VI</h1>
+    <div class="subtitle">Countdown to Release</div>
+
+    <div class="countdown">
+        <div class="unit">
+            <div class="number" id="weeks">0</div>
+            <div class="label">WEEKS</div>
+        </div>
+        <div class="unit">
+            <div class="number" id="hours">0</div>
+            <div class="label">HOURS</div>
+        </div>
+        <div class="unit">
+            <div class="number" id="minutes">0</div>
+            <div class="label">MINUTES</div>
+        </div>
+        <div class="unit">
+            <div class="number" id="seconds">0</div>
+            <div class="label">SECONDS</div>
+        </div>
+    </div>
+</div>
+
+<footer id="footerNote">
+    This was created using AI because the original requestor is too lazy to write their own HTML.
+</footer>
+
+<div class="mute" id="muteBtn">🔊 Music</div>
+
+<!-- Background Music -->
+<audio id="bgm" src="50.mp3" loop></audio>
+
+<script>
+/* ===== GTA VI Countdown ===== */
+const gta6ReleaseUTC = Date.UTC(2026, 10, 19, 13, 0, 0);
+const gta5ReleaseUTC = Date.UTC(2013, 8, 17, 0, 0, 0);
+
+const second = 1000;
+const minute = second * 60;
+const hour = minute * 60;
+const day = hour * 24;
+const week = day * 7;
+
+const weeksEl = document.getElementById("weeks");
+const hoursEl = document.getElementById("hours");
+const minutesEl = document.getElementById("minutes");
+const secondsEl = document.getElementById("seconds");
+const footerNote = document.getElementById("footerNote");
+
+function updateCountdown() {
+    const now = Date.now();
+    let diff = gta6ReleaseUTC - now;
+
+    if (diff <= 0) {
+        document.querySelector("h1").textContent = "NOW AVAILABLE";
+        document.querySelector(".countdown").style.display = "none";
+        return;
+    }
+
+    const weeksVal = Math.floor(diff / week);
+    diff %= week;
+
+    const hoursVal = Math.floor(diff / hour);
+    diff %= hour;
+
+    const minutesVal = Math.floor(diff / minute);
+    diff %= minute;
+
+    const secondsVal = Math.floor(diff / second);
+
+    weeksEl.textContent = weeksVal;
+    hoursEl.textContent = hoursVal;
+    minutesEl.textContent = minutesVal;
+    secondsEl.textContent = secondsVal;
+
+    const daysSinceGTA5 = Math.floor((now - gta5ReleaseUTC) / day);
+    footerNote.innerHTML =
+        `This was created using AI because the original requestor is too lazy to write their own HTML.
+        <br>It has been ${daysSinceGTA5.toLocaleString()} days since the release of GTA V.`;
+}
+
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+/* ===== Background Music ===== */
+const bgm = document.getElementById("bgm");
+bgm.volume = 0.25;
+
+bgm.play().catch(() => {
+    document.addEventListener("click", () => bgm.play(), { once: true });
+});
+
+document.getElementById("muteBtn").onclick = () => {
+    bgm.muted = !bgm.muted;
+};
+</script>
