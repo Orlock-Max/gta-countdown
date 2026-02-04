@@ -42,10 +42,11 @@ h1 {
 }
 
 /* Countdown */
+/* Countdown as one horizontal line */
 .countdown {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 2rem;
+    display: flex;           /* use flex instead of grid */
+    justify-content: center; /* center the units horizontally */
+    gap: 1.5rem;             /* space between units */
 }
 
 .unit {
@@ -117,6 +118,7 @@ footer {
         <div class="label">SECONDS</div>
     </div>
 </div>
+
 
 
 <footer id="footerNote">
